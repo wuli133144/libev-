@@ -1,0 +1,59 @@
+
+
+
+
+teamtalk 的代码次序
+分析源代码次序：
+
+
+TTServer主要包含了以下几种服务器:
+
+LoginServer (C++): 登录服务器，分配一个负载小的MsgServer给客户端使用
+MsgServer (C++):   消息服务器，提供客户端大部分信令处理功能，包括私人聊天、群组聊天等
+RouteServer (C++): 路由服务器，为登录在不同MsgServer的用户提供消息转发功能
+FileServer (C++):  文件服务器，提供客户端之间得文件传输服务，支持在线以及离线文件传输
+MsfsServer (C++):  图片存储服务器，提供头像，图片传输中的图片存储服务
+DBProxy (JAVA):    数据库代理服务器，提供mysql以及redis的访问服务，屏蔽其他服务器与mysql与redis的直接交互
+
+
+
+当前支持的功能点：
+
+私人聊天
+群组聊天
+文件传输
+多点登录
+组织架构设置
+
+
+分析代码次序：
+
+
+loginserve====>msgserver======>routeserve=======>fileserve=====>msfsserver=====>dbserver
+
+
+
+// 处理MsgServer信息
+_HandleMsgServInfo(CImPduMsgServInfo* pPdu)  
+// 用户信息更新(登入和退出)   
+_HandleUserCntUpdate(CImPduUserCntUpdate* pPdu)
+// 给Client端分配MsgServer
+_HandleMsgServRequest(CImPduMsgServRequest* pPdu)
+// 将MsgServer中的用户信息加到g_user_conn_cnt_map中
+_HandleUserConnInfo(CImPduUserConnInfo *pPdu)
+// 先不管CImPdu和他的继承类
+
+
+
+
+
+//开始的时候是 
+//msgserver 将它的信息主动推送到 loginserve ，loginserve调用  _HandleMsgServInfo 处理msgserve信息 并将信息保存在
+g_msg_serve_map中去这时候就是 loginserve就有了服务器的信息了， 当客户登录loginsever是loginsere查找一个 msgserver
+ 返回一个msgserve数据包给客户端 给client
+
+
+
+
+
+

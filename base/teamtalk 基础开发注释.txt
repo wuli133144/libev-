@@ -1,0 +1,13 @@
+
+
+
+im消息系统：
+
+teamtalk资料使用：http://blog.csdn.net/fanhenghui/article/details/52936758
+
+
+今日任务
+
+1.搜集teamtalk的资料 并整理理解teamtalk的结构设计
+
+2.尝试阅读源代码
